@@ -2,28 +2,36 @@ name: iOS Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+      - name: Set up Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
+
+      - name: Install dependencies
+        run: |
+          cd "Cal AI"
+          xcodebuild -resolvePackageDependencies -project "Cal AI.xcodeproj"
 
       - name: List schemes
-        run: xcodebuild -list -project "Cal AI.xcodeproj"
+        run: |
+          cd "Cal AI"
+          xcodebuild -list -project "Cal AI.xcodeproj"
 
       - name: Build app (Simulator)
         run: |
+          cd "Cal AI"
           xcodebuild -project "Cal AI.xcodeproj" \
-                     -scheme "Cal_AI" \
+                     -scheme "Cal AI" \
                      -sdk iphonesimulator \
                      -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest' \
                      clean build
