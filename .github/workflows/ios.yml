@@ -17,21 +17,18 @@ jobs:
       - name: Set up Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: "15.4" # Use a stable preinstalled version (15.x works on macos-14 runners)
+          xcode-version: "15.4" # stable on macos-14 runners
 
-      - name: Install dependencies
+      - name: Resolve Swift Packages
         run: |
-          cd "Cal AI"
           xcodebuild -resolvePackageDependencies -project "Cal AI.xcodeproj"
 
-      - name: List schemes
+      - name: List available schemes
         run: |
-          cd "Cal AI"
           xcodebuild -list -project "Cal AI.xcodeproj"
 
-      - name: Build app (Simulator)
+      - name: Build app for Simulator
         run: |
-          cd "Cal AI"
           xcodebuild -project "Cal AI.xcodeproj" \
                      -scheme "Cal AI" \
                      -sdk iphonesimulator \
